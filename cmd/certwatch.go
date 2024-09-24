@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"certwatch/config"
 	"certwatch/pkg/certificate"
 	"certwatch/pkg/logging"
 	"certwatch/pkg/notification"
@@ -25,15 +26,12 @@ func main() {
 	// logger.Error("Failed to check certificate for example.com")
 
 	// 读取配置文件
-	if err := loadConfig(); err != nil {
+	if err := config.LoadConfig("."); err != nil {
 		log.Fatalf("Error loading configuration: %v", err)
 	}
 
-	// fmt.Printf("Loaded Config: %v\n", viper.AllSettings()) // 调试信息
-
 	// 解析配置中的域名列表
 	domains := viper.GetStringMap("domains")
-	// log.Println(domains)
 	if len(domains) == 0 {
 		log.Fatal("No domains found in configuration")
 	}
@@ -79,20 +77,6 @@ func main() {
 
 	// 阻塞主进程，保持调度器运行
 	select {}
-}
-
-// loadConfig 读取配置文件
-func loadConfig() error {
-	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
-	viper.AddConfigPath("/etc/certwatch/")
-
-	viper.SetConfigType("yaml") // 配置文件格式为 YAML
-
-	if err := viper.ReadInConfig(); err != nil {
-		return fmt.Errorf("fatal error reading config file: %w", err)
-	}
-	return nil
 }
 
 // sendNotifications 发送通知
