@@ -1,0 +1,24 @@
+domains:
+  - name: "example.com"
+    notify_before_days: 30
+  - name: "anotherdomain.com"
+    notify_before_days: 14
+notifications:
+  email:
+    enabled: true
+    smtp_server: "smtp.example.com"
+    port: 587
+    username: "user@example.com"
+    password: "password"
+    to: ["recipient@example.com"]
+  slack:
+    enabled: true
+    webhook_url: "https://hooks.slack.com/services/..."
+  sms:
+    enabled: false
+    provider: "twilio"
+    account_sid: "ACXXXXXXXXXXXXXXXXX"
+    auth_token: "your_auth_token"
+    from: "+123456789"
+    to: ["+987654321"]
+check_interval: 60 # 证书检查的时间间隔，单位为分钟
